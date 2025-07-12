@@ -7,16 +7,22 @@ import tensorflow as tf
 
 app = FastAPI()
 
+endpoint = "http://localhost:8501/v1/models/potato_model:predict" #dynamically loading models
 
-MODEL = tf.keras.models.load_model("../models/1.keras")
-CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
+
+#MODEL = tf.keras.models.load_model("../models/1.keras") #only one model
+
+#new versions are built: tf serving
+
+
+CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"] 
 
 
 @app.get('/ping')
 async def ping():
     return "Hello I am alive!!"
 
-
+z
 def read_file_as_image(data) -> np.ndarray:
     image = np.array(Image.open(BytesIO(data)))
     return image
@@ -32,17 +38,13 @@ async def predict(
     img_batch = np.expand_dims(image, 0)
 
     predictions = MODEL.predict(img_batch)
-    predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
+    predicted_class = CLASS_NAMES[np.argmax(predictions[0])] #maximum value between ex: (0.22, 0.99, 0.44) this will give index for class name
     cofidence = np.max(predictions[0])
 
     return{
         'class': predicted_class,
         'confidence': float(cofidence)
     }
-    
-
-
-
 
 
 if __name__ == "__main__":
