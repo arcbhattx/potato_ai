@@ -21,7 +21,8 @@ CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 async def ping():
     return "Hello I am alive!!"
 
-z
+
+
 def read_file_as_image(data) -> np.ndarray:
     image = np.array(Image.open(BytesIO(data)))
     return image
@@ -41,18 +42,16 @@ async def predict(
     }
 
 
-    requests.post(endpoint, json=json_data)
-
-
-    predictions = MODEL.predict(img_batch)
-    predicted_class = CLASS_NAMES[np.argmax(predictions[0])] #maximum value between ex: (0.22, 0.99, 0.44) this will give index for class name
-    cofidence = np.max(predictions[0])
-
+    response = requests.post(endpoint, json=json_data)
+    prediction = response.json()["predictions"][0]
+    
+    predicted_class = CLASS_NAMES[np.argmax(prediction)]
+    confidence = np.max(prediction)
+    
     return{
-        'class': predicted_class,
-        'confidence': float(cofidence)
+        "class": predicted_class,
+        "confidence": confidence
     }
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host = 'localhost', port=8080)
