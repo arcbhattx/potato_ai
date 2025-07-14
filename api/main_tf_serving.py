@@ -5,9 +5,22 @@ from io import BytesIO
 from PIL import Image
 import tensorflow as tf
 import requests
+
+from fastapi.middleware.cors import CORSMiddleware
+
+
+
 app = FastAPI()
 
-endpoint = "http://localhost:8501/v1/models/potato_model:predict" #dynamically loading models
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change "*" to specific domains in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+endpoint = "http://localhost:8501/v1/models/potato_model:predict" #dynamically loading models from tf serving docker
 
 
 
