@@ -31,7 +31,7 @@ function MainApp() {
 
   return (
     <div className="bg-black text-white p-6">
-      <h1 className="text-2xl font-bold mb-4">Image Prediction</h1>
+      
 
       <input
         type="file"
@@ -42,7 +42,7 @@ function MainApp() {
 
       <button
         onClick={predictImage}
-        className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+        className="bg-gray-200 px-4 py-2 rounded hover:bg-white text-black"
       >
         Predict Image
       </button>
